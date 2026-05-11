@@ -511,6 +511,7 @@
     </div>
 
     <script>
+        //App script URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzmD_wLdlAbeOnZ7EpkftSAe2OvnuRPa8lLOvGkDvWtf35c8N--AEmlpJsWY7bosgmSw/exec';
 
         let allEvents = [];
@@ -572,16 +573,28 @@
             });
         }
 
-        // Display only upcoming events by default
+        // Display upcoming events + 3 most recent past events (at least 10 total)
         function displayUpcomingEvents() {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
-            filteredEvents = allEvents.filter(event => {
+            const upcomingEvents = allEvents.filter(event => {
                 const eventDate = event.DateObj || new Date(event.Date);
                 eventDate.setHours(0, 0, 0, 0);
                 return eventDate >= today;
             });
+
+            const pastEvents = allEvents.filter(event => {
+                const eventDate = event.DateObj || new Date(event.Date);
+                eventDate.setHours(0, 0, 0, 0);
+                return eventDate < today;
+            }).reverse(); // Get most recent past events first
+
+            // Get the 3 most recent past events
+            const recentPastEvents = pastEvents.slice(0, 3);
+
+            // Combine: upcoming events + 3 recent past events
+            filteredEvents = [...upcomingEvents, ...recentPastEvents];
 
             isFiltered = false;
             renderTimeline();
