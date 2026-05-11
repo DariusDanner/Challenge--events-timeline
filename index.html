@@ -511,6 +511,7 @@
     </div>
 
     <script>
+        // Link to the app script
         const SCRIPT_URL = 'https://script.google.com/a/macros/stud.hs-offenburg.de/s/AKfycbzzmD_wLdlAbeOnZ7EpkftSAe2OvnuRPa8lLOvGkDvWtf35c8N--AEmlpJsWY7bosgmSw/exec';
 
         let allEvents = [];
@@ -659,6 +660,19 @@
                     day: '2-digit'
                 });
 
+                // Parse time from timestamp format (1899-12-30T11:00:00.000Z) to HH:MM
+                let timeHTML = '';
+                if (event.Time) {
+                    try {
+                        const timeDate = new Date(event.Time);
+                        const hours = String(timeDate.getUTCHours()).padStart(2, '0');
+                        const minutes = String(timeDate.getUTCMinutes()).padStart(2, '0');
+                        timeHTML = `<div class="event-time">⏰ ${hours}:${minutes}</div>`;
+                    } catch (e) {
+                        timeHTML = `<div class="event-time">⏰ ${event.Time}</div>`;
+                    }
+                }
+
                 let membersHTML = '';
                 if (event.Members) {
                     membersHTML = `<div class="meta-item"><span class="meta-icon">👥</span><strong>Members:</strong> ${event.Members}</div>`;
@@ -683,7 +697,7 @@
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
                         <div class="event-date">${formattedDate}</div>
-                        ${event.Time ? `<div class="event-time">⏰ ${event.Time}</div>` : ''}
+                        ${timeHTML}
                         <div class="event-title">${event.Title}</div>
                         ${categoryHTML}
                         ${event.Description ? `<div class="event-description">${event.Description}</div>` : ''}
