@@ -1,766 +1,610 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChallengeEU Events</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChallengeEU — Events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :root {
-            --primary: #1a1a1a;
-            --accent: #ff6633;
-            --accent-light: #ffe6d9;
-            --text: #333333;
-            --text-light: #666666;
-            --border: #e0e0e0;
-            --bg: #f9f9f9;
-            --bg-card: #ffffff;
-        }
+    :root {
+        --accent: #ff6633;
+        --accent-dark: #e0531f;
+        --accent-light: #ffe6dc;
+        --ink: #16130f;
+        --ink-soft: #5c554d;
+        --line: #e3ddd4;
+        --paper: #f7f4ef;
+        --card: #ffffff;
+        --radius: 16px;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, var(--bg) 0%, #f5f5f5 100%);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 2rem;
-        }
+    body {
+        font-family: 'Hanken Grotesk', sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.55;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+    }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
 
-        header {
-            text-align: center;
-            margin-bottom: 2.5rem;
-            animation: slideDown 0.6s ease-out;
-        }
+    /* ---------- Top nav bar ---------- */
+    .navbar {
+        display: flex; align-items: center; justify-content: space-between;
+        background: var(--ink); color: #fff;
+        border-radius: 999px; padding: 0.7rem 1.4rem; margin-bottom: 3rem;
+    }
+    .brand { display: flex; align-items: center; gap: 0.6rem; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; }
+    .brand .star { width: 22px; height: 22px; flex-shrink: 0; }
+    .brand em { font-style: italic; font-weight: 700; }
+    .nav-links { display: flex; gap: 1.4rem; font-size: 0.9rem; font-weight: 600; color: #cfc8bf; }
+    .nav-links span { cursor: default; }
+    .nav-links span.active { color: #fff; }
 
-        .logo {
-            font-size: 2.2rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            color: var(--primary);
-            letter-spacing: -1px;
-        }
+    /* ---------- Hero ---------- */
+    .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2.5rem; align-items: center; margin-bottom: 3.5rem; }
+    .hero h1 { font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 1.2rem; }
+    .hero p { color: var(--ink-soft); font-size: 1.05rem; max-width: 42ch; }
+    .hero-art {
+        aspect-ratio: 16/11; border-radius: var(--radius);
+        background:
+            radial-gradient(circle at 70% 30%, rgba(255,102,51,0.25), transparent 55%),
+            linear-gradient(135deg, #1d1a16 0%, #2b2620 100%);
+        position: relative; overflow: hidden;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .hero-art svg { width: 46%; height: auto; opacity: 0.95; }
+    .hero-art::after {
+        content: ""; position: absolute; inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+        background-size: 14px 14px;
+    }
 
-        .logo-accent {
-            color: var(--accent);
-        }
+    /* ---------- Controls ---------- */
+    .controls-head {
+        display: flex; align-items: flex-end; justify-content: space-between;
+        gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem;
+    }
+    .count-title { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; }
+    .count-title span { color: var(--accent); }
 
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.3rem;
-            color: var(--primary);
-        }
+    .perpage { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; color: var(--ink-soft); font-weight: 600; }
+    .perpage select {
+        font-family: inherit; font-weight: 600; font-size: 0.9rem;
+        border: 1.5px solid var(--ink); border-radius: 999px;
+        padding: 0.35rem 0.9rem; background: transparent; cursor: pointer; color: var(--ink);
+    }
 
-        .subtitle {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            font-weight: 400;
-        }
+    .search-row { margin-bottom: 1rem; }
+    .search-row input {
+        width: 100%; font-family: inherit; font-size: 1rem;
+        border: 1.5px solid var(--line); border-radius: 999px;
+        padding: 0.8rem 1.2rem; background: var(--card); color: var(--ink);
+        transition: border-color .2s, box-shadow .2s;
+    }
+    .search-row input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-light); }
 
-        .controls {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-            animation: slideUp 0.6s ease-out 0.1s both;
-            background: var(--bg-card);
-            padding: 1.75rem;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
+    .filters { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.2rem; }
+    .pill {
+        font-family: inherit; font-size: 0.85rem; font-weight: 600;
+        border: 1.5px solid var(--line); background: var(--card); color: var(--ink);
+        border-radius: 999px; padding: 0.45rem 1rem; cursor: pointer;
+        transition: all .2s; white-space: nowrap;
+    }
+    .pill:hover { border-color: var(--ink); }
+    .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
+    /* + filters dropdown */
+    .filter-menu { position: relative; }
+    .pill.more { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .dropdown {
+        position: absolute; top: calc(100% + 0.5rem); left: 0; z-index: 30;
+        background: var(--card); border: 1.5px solid var(--ink); border-radius: 14px;
+        padding: 1rem 1.1rem; min-width: 240px; box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+        display: none;
+    }
+    .dropdown.open { display: block; }
+    .dropdown h4 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.7rem; }
+    .dropdown label { display: flex; align-items: center; gap: 0.55rem; padding: 0.3rem 0; font-size: 0.9rem; cursor: pointer; color: var(--ink-soft); }
+    .dropdown label:hover { color: var(--ink); }
+    .dropdown input { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
 
-        label {
-            font-weight: 600;
-            font-size: 0.8rem;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
+    /* ---------- Accordion ---------- */
+    .group { border-top: 1px solid var(--line); }
+    .group:last-of-type { border-bottom: 1px solid var(--line); }
+    .group-head {
+        display: flex; align-items: center; gap: 1rem; cursor: pointer;
+        padding: 1.15rem 0.5rem; user-select: none; transition: background .2s;
+    }
+    .group-head:hover { background: rgba(0,0,0,0.02); }
+    .group-name { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.25rem; font-weight: 700; flex: 1; letter-spacing: -0.01em; }
+    .badge {
+        min-width: 2.2rem; text-align: center; font-size: 0.8rem; font-weight: 700;
+        color: var(--ink-soft); border: 1.5px dashed var(--line); border-radius: 999px; padding: 0.2rem 0.6rem;
+    }
+    .chev { width: 22px; height: 22px; flex-shrink: 0; transition: transform .25s; color: var(--accent); }
+    .group.collapsed .chev { transform: rotate(-90deg); }
 
-        input[type="text"],
-        input[type="date"],
-        select {
-            padding: 0.65rem 0.85rem;
-            border: 1.5px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            background: var(--bg-card);
-            color: var(--text);
-            font-family: inherit;
-        }
+    .group-body { overflow: hidden; transition: max-height .3s ease; }
+    .group.collapsed .group-body { max-height: 0 !important; }
 
-        input[type="text"]:focus,
-        input[type="date"]:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-light);
-        }
+    /* ---------- Event row ---------- */
+    .event { border-top: 1px dashed var(--line); margin: 0 0.5rem; }
+    .event-row {
+        display: flex; align-items: center; gap: 1rem; cursor: pointer;
+        padding: 0.95rem 0.5rem; transition: background .2s;
+    }
+    .event-row:hover { background: rgba(255,102,51,0.05); }
+    .event-title { flex: 1; font-weight: 600; font-size: 1.02rem; }
+    .event-date { font-size: 0.85rem; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
+    .event-arrow { width: 18px; height: 18px; color: var(--ink); flex-shrink: 0; transition: transform .25s; }
+    .event.open .event-arrow { transform: rotate(45deg); }
 
-        .button-group {
-            display: flex;
-            gap: 0.75rem;
-            align-items: flex-end;
-            grid-column: 1 / -1;
-        }
+    /* detail */
+    .detail { overflow: hidden; max-height: 0; transition: max-height .35s ease; }
+    .event.open .detail { max-height: 1200px; }
+    .detail-inner { padding: 0.4rem 0.6rem 1.6rem; }
+    .detail-card {
+        background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem 1.5rem;
+    }
+    .detail-desc { color: var(--ink); margin-bottom: 1.2rem; }
+    .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.9rem 1.5rem; margin-bottom: 1.2rem; }
+    .meta-item { font-size: 0.9rem; }
+    .meta-item .k { display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 0.15rem; }
+    .meta-item .v { color: var(--ink); }
+    .meta-item a { color: var(--ink); }
+    .topics { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.2rem; }
+    .topic { background: var(--accent-light); color: var(--accent-dark); font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.7rem; border-radius: 999px; }
+    .register {
+        display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none;
+        background: var(--accent); color: #fff; font-weight: 700; font-size: 0.9rem;
+        padding: 0.65rem 1.3rem; border-radius: 999px; transition: background .2s;
+    }
+    .register:hover { background: var(--accent-dark); }
 
-        button {
-            padding: 0.65rem 1.2rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 0.08em;
-            flex: 1;
-            min-width: 120px;
-        }
+    /* ---------- Pagination ---------- */
+    .pager { display: flex; align-items: center; justify-content: flex-end; gap: 0.5rem; margin-top: 2rem; font-size: 0.9rem; font-weight: 600; color: var(--ink-soft); }
+    .pager button {
+        font-family: inherit; font-weight: 700; min-width: 38px; height: 38px;
+        border: 1.5px solid var(--ink); background: transparent; border-radius: 999px; cursor: pointer; color: var(--ink);
+        transition: all .2s; padding: 0 0.5rem;
+    }
+    .pager button:hover:not(:disabled) { background: var(--ink); color: #fff; }
+    .pager button:disabled { opacity: 0.3; cursor: not-allowed; }
+    .pager .current { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-        button:hover {
-            background: #e55a22;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 102, 51, 0.2);
-        }
+    /* ---------- States ---------- */
+    .empty, .loading { text-align: center; padding: 4rem 1rem; color: var(--ink-soft); }
+    .spinner { width: 38px; height: 38px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; margin: 0 auto 1rem; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-        button:active {
-            transform: translateY(0);
-        }
-
-        .reset-btn {
-            background: #a0a0a0;
-            flex: 0 1 auto;
-            min-width: auto;
-        }
-
-        .reset-btn:hover {
-            background: #888888;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-bottom: 2.5rem;
-            animation: slideUp 0.6s ease-out 0.2s both;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-top: 0.25rem;
-        }
-
-        .timeline {
-            position: relative;
-            padding: 2rem 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(180deg, var(--accent) 0%, rgba(255, 102, 51, 0.3) 100%);
-            transform: translateX(-50%);
-        }
-
-        .timeline-item {
-            margin-bottom: 2.5rem;
-            animation: fadeInUp 0.6s ease-out forwards;
-            opacity: 0;
-        }
-
-        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
-        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
-        .timeline-item:nth-child(3) { animation-delay: 0.3s; }
-        .timeline-item:nth-child(n+4) { animation-delay: 0.4s; }
-
-        .timeline-item:nth-child(odd) {
-            margin-left: 0;
-            margin-right: 52%;
-            text-align: right;
-        }
-
-        .timeline-item:nth-child(even) {
-            margin-left: 52%;
-            margin-right: 0;
-            text-align: left;
-        }
-
-        .timeline-marker {
-            position: absolute;
-            left: 50%;
-            top: 1rem;
-            width: 16px;
-            height: 16px;
-            background: var(--accent);
-            border: 4px solid white;
-            border-radius: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            box-shadow: 0 0 0 2px var(--accent);
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item:hover .timeline-marker {
-            width: 24px;
-            height: 24px;
-            top: 0.6rem;
-            box-shadow: 0 0 0 3px var(--accent), 0 0 20px rgba(255, 102, 51, 0.4);
-        }
-
-        .timeline-content {
-            background: var(--bg-card);
-            padding: 1.5rem;
-            border-radius: 10px;
-            border-left: 4px solid var(--accent);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item:hover .timeline-content {
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            transform: translateY(-4px);
-        }
-
-        .timeline-item:nth-child(even) .timeline-content {
-            border-left: none;
-            border-right: 4px solid var(--accent);
-        }
-
-        .event-date {
-            font-size: 0.8rem;
-            color: var(--accent);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.4rem;
-        }
-
-        .event-time {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-bottom: 0.6rem;
-        }
-
-        .event-title {
-            font-size: 1.35rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-            color: var(--primary);
-        }
-
-        .event-category {
-            display: inline-block;
-            background: var(--accent-light);
-            color: var(--accent);
-            padding: 0.3rem 0.7rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 0.9rem;
-        }
-
-        .event-description {
-            color: var(--text-light);
-            margin-bottom: 0.9rem;
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-
-        .event-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.6rem;
-            color: var(--text-light);
-        }
-
-        .meta-icon {
-            color: var(--accent);
-            font-weight: 700;
-            min-width: 18px;
-        }
-
-        .event-link {
-            display: inline-block;
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            border: 2px solid var(--accent);
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            font-size: 0.85rem;
-        }
-
-        .event-link:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: var(--text-light);
-        }
-
-        .empty-state h2 {
-            color: var(--text);
-            margin-bottom: 0.5rem;
-            font-size: 1.3rem;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-light);
-        }
-
-        .spinner {
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.5rem;
-            }
-
-            .timeline::before {
-                left: 15px;
-            }
-
-            .timeline-item:nth-child(odd),
-            .timeline-item:nth-child(even) {
-                margin-left: 55px;
-                margin-right: 0;
-                text-align: left;
-            }
-
-            .timeline-marker {
-                left: 15px;
-            }
-
-            .timeline-content {
-                border-left: 4px solid var(--accent);
-                border-right: none;
-            }
-
-            .controls {
-                grid-template-columns: 1fr;
-            }
-
-            .button-group {
-                grid-column: 1;
-            }
-
-            .stats {
-                flex-direction: column;
-                gap: 1.5rem;
-            }
-        }
-    </style>
+    @media (max-width: 760px) {
+        .hero { grid-template-columns: 1fr; }
+        .hero-art { order: -1; aspect-ratio: 16/9; }
+        .nav-links { display: none; }
+        .navbar { border-radius: 18px; }
+    }
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">Challenge<span class="logo-accent">EU</span></div>
-            <h1>Events Timeline</h1>
-            <p class="subtitle">Discover upcoming events and opportunities</p>
-        </header>
+<div class="wrap">
 
-        <div class="controls">
-            <div class="filter-group">
-                <label for="searchInput">🔍 Search</label>
-                <input type="text" id="searchInput" placeholder="Search events...">
-            </div>
-
-            <div class="filter-group">
-                <label for="dateFromInput">📅 From</label>
-                <input type="date" id="dateFromInput">
-            </div>
-
-            <div class="filter-group">
-                <label for="dateToInput">📅 To</label>
-                <input type="date" id="dateToInput">
-            </div>
-
-            <div class="filter-group">
-                <label for="locationFilter">📍 Location</label>
-                <select id="locationFilter">
-                    <option value="">All Locations</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label for="membersFilter">👥 Members</label>
-                <select id="membersFilter">
-                    <option value="">All Members</option>
-                </select>
-            </div>
-
-            <div class="button-group">
-                <button onclick="applyFilters()">Apply Filters</button>
-                <button class="reset-btn" onclick="resetFilters()">Reset</button>
-            </div>
+    <!-- NAV -->
+    <div class="navbar">
+        <div class="brand">
+            <svg class="star" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 2 L23 17 L38 20 L23 23 L20 38 L17 23 L2 20 L17 17 Z" fill="#ff6633"/>
+            </svg>
+            Challenge<em>EU</em>
         </div>
-
-        <div class="stats">
-            <div class="stat">
-                <div class="stat-number" id="totalEvents">0</div>
-                <div class="stat-label">Total Events</div>
-            </div>
-            <div class="stat">
-                <div class="stat-number" id="filteredEvents">0</div>
-                <div class="stat-label">Showing</div>
-            </div>
-        </div>
-
-        <div id="content">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Loading events...</p>
-            </div>
+        <div class="nav-links">
+            <span class="active">Events</span>
+            <span>About</span>
+            <span>Contact</span>
         </div>
     </div>
 
-    <script>
-        //App script URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzmD_wLdlAbeOnZ7EpkftSAe2OvnuRPa8lLOvGkDvWtf35c8N--AEmlpJsWY7bosgmSw/exec';
+    <!-- HERO -->
+    <div class="hero">
+        <div>
+            <h1>Events &amp;<br>Opportunities</h1>
+            <p>Browse upcoming events, workshops, summer schools and calls across the ChallengeEU network. Filter by type or audience and expand any event for the full details.</p>
+        </div>
+        <div class="hero-art">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 1 L23.5 16.5 L39 20 L23.5 23.5 L20 39 L16.5 23.5 L1 20 L16.5 16.5 Z" fill="#ff6633"/>
+            </svg>
+        </div>
+    </div>
 
-        let allEvents = [];
-        let filteredEvents = [];
-        let isFiltered = false;
+    <!-- CONTROLS -->
+    <div class="controls-head">
+        <div class="count-title">Events: <span id="totalCount">0</span></div>
+        <div class="perpage">
+            <span>Per page</span>
+            <select id="perPage">
+                <option value="10">10</option>
+                <option value="20" selected>20</option>
+                <option value="50">50</option>
+                <option value="all">All</option>
+            </select>
+        </div>
+    </div>
 
-        // Initialize the page
-        async function init() {
-            try {
-                await fetchEvents();
-                populateFilters();
-                displayUpcomingEvents();
-            } catch (error) {
-                console.error('Error initializing:', error);
-                document.getElementById('content').innerHTML = `
-                    <div class="empty-state">
-                        <h2>⚠️ Error Loading Events</h2>
-                        <p>Make sure you've configured the Google Apps Script URL correctly.</p>
-                        <p style="margin-top: 1rem; font-size: 0.9rem;">
-                            Current URL: <code>${SCRIPT_URL}</code>
-                        </p>
-                    </div>
-                `;
+    <div class="search-row">
+        <input type="text" id="search" placeholder="Search events by name, description or topic…">
+    </div>
+
+    <div class="filters" id="filters"></div>
+
+    <!-- LIST -->
+    <div id="list">
+        <div class="loading"><div class="spinner"></div><p>Loading events…</p></div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pager" id="pager"></div>
+
+</div>
+
+<script>
+    // ⚠️ Your Google Apps Script URL
+    const SCRIPT_URL = 'https://script.google.com/a/macros/stud.hs-offenburg.de/s/AKfycbzzmD_wLdlAbeOnZ7EpkftSAe2OvnuRPa8lLOvGkDvWtf35c8N--AEmlpJsWY7bosgmSw/exec';
+
+    // ---------- state ----------
+    let events = [];
+    let activeTypes = new Set();      // empty = all
+    let activeAudiences = new Set();  // empty = all
+    let searchTerm = '';
+    let perPage = 20;
+    let currentPage = 1;
+    let collapsedTypes = new Set();  // types the user has collapsed (default: expanded)
+    let openEventIds = new Set();
+
+    // ---------- helpers ----------
+    // Find a field value regardless of trailing " *", spelling/spacing or case
+    function getField(ev, ...names) {
+        for (const n of names) {
+            if (ev[n] != null && ev[n] !== '') return ev[n];
+            if (ev[n + ' *'] != null && ev[n + ' *'] !== '') return ev[n + ' *'];
+        }
+        const norm = {};
+        for (const k in ev) norm[k.replace(/\*/g, '').trim().toLowerCase()] = ev[k];
+        for (const n of names) {
+            const key = n.toLowerCase().trim();
+            if (norm[key] != null && norm[key] !== '') return norm[key];
+        }
+        return '';
+    }
+
+    function parseDate(value) {
+        if (!value) return null;
+        if (value instanceof Date) return value;
+        const str = String(value).trim();
+        if (str.includes('T') || /^\d{4}-\d{2}-\d{2}/.test(str)) {
+            const d = new Date(str);
+            if (!isNaN(d)) return d;
+        }
+        const m = str.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})$/);
+        if (m) return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+        const d = new Date(str);
+        return isNaN(d) ? null : d;
+    }
+
+    function parseTime(value) {
+        if (!value) return '';
+        const str = String(value).trim();
+        if (str.includes('T')) {
+            const d = new Date(str);
+            if (!isNaN(d)) return String(d.getUTCHours()).padStart(2, '0') + ':' + String(d.getUTCMinutes()).padStart(2, '0');
+        }
+        return str;
+    }
+
+    function fmtDate(d) {
+        if (!d) return '';
+        return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function dateRange(ev) {
+        const s = ev._start, e = ev._end;
+        if (s && e && e.getTime() !== s.getTime()) {
+            const sameYear = s.getFullYear() === e.getFullYear();
+            const sStr = s.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: sameYear ? undefined : 'numeric' });
+            return sStr + ' – ' + fmtDate(e);
+        }
+        return fmtDate(s);
+    }
+
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function splitList(value) {
+        if (!value) return [];
+        return String(value).split(/[|,;]/).map(x => x.trim()).filter(Boolean);
+    }
+
+    // ---------- init ----------
+    async function init() {
+        try {
+            const res = await fetch(SCRIPT_URL);
+            if (!res.ok) throw new Error('fetch failed');
+            const raw = await res.json();
+
+            events = raw.map((ev, i) => {
+                const start = parseDate(getField(ev, 'Start Date'));
+                const end = parseDate(getField(ev, 'End Date')) || start;
+                return {
+                    _id: i,
+                    _raw: ev,
+                    name: getField(ev, 'Event Name'),
+                    type: getField(ev, 'Event Type') || 'Other',
+                    start, end,
+                    _start: start, _end: end,
+                    time: parseTime(getField(ev, 'Start Time')),
+                    organizer: getField(ev, 'Organizer/Contact Person', 'Organizer/Contact', 'Organizer'),
+                    email: getField(ev, 'Contact Email'),
+                    location: getField(ev, 'Location'),
+                    description: getField(ev, 'Description'),
+                    audience: getField(ev, 'Target Audience'),
+                    topics: getField(ev, 'Topics', 'Topics/Focus Areas', 'Key Topics'),
+                    registration: getField(ev, 'Registration', 'Registration Link', 'Registration/Info Link', 'More Info Link'),
+                    notes: getField(ev, 'Additional Notes', 'Additonal Notes')
+                };
+            }).filter(e => e.name);
+
+            // sort by start date ascending
+            events.sort((a, b) => {
+                if (!a.start) return 1;
+                if (!b.start) return -1;
+                return a.start - b.start;
+            });
+
+            buildFilters();
+            render();
+        } catch (err) {
+            console.error(err);
+            document.getElementById('list').innerHTML =
+                '<div class="empty"><h3>⚠️ Could not load events</h3><p>Check that the Google Apps Script URL is correct and deployed for "Anyone".</p></div>';
+            document.getElementById('pager').innerHTML = '';
+        }
+    }
+
+    // ---------- filters UI ----------
+    function buildFilters() {
+        const types = [...new Set(events.map(e => e.type))].sort();
+        const audiences = [...new Set(events.flatMap(e => splitList(e.audience)))].sort();
+
+        const box = document.getElementById('filters');
+        box.innerHTML = '';
+
+        // "All" pill
+        const all = document.createElement('button');
+        all.className = 'pill' + (activeTypes.size === 0 ? ' active' : '');
+        all.textContent = 'All';
+        all.onclick = () => { activeTypes.clear(); currentPage = 1; render(); };
+        box.appendChild(all);
+
+        // type pills
+        types.forEach(t => {
+            const b = document.createElement('button');
+            b.className = 'pill' + (activeTypes.has(t) ? ' active' : '');
+            b.textContent = t;
+            b.onclick = () => {
+                activeTypes.has(t) ? activeTypes.delete(t) : activeTypes.add(t);
+                currentPage = 1; render();
+            };
+            box.appendChild(b);
+        });
+
+        // + filters (audience)
+        if (audiences.length) {
+            const menu = document.createElement('div');
+            menu.className = 'filter-menu';
+
+            const trigger = document.createElement('button');
+            trigger.className = 'pill more' + (activeAudiences.size ? ' active' : '');
+            trigger.innerHTML = '+ Audience' + (activeAudiences.size ? ' (' + activeAudiences.size + ')' : '');
+
+            const dd = document.createElement('div');
+            dd.className = 'dropdown';
+            dd.innerHTML = '<h4>Target audience</h4>';
+            audiences.forEach(a => {
+                const lbl = document.createElement('label');
+                const cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.checked = activeAudiences.has(a);
+                cb.onchange = () => {
+                    cb.checked ? activeAudiences.add(a) : activeAudiences.delete(a);
+                    currentPage = 1; render();
+                };
+                lbl.appendChild(cb);
+                lbl.appendChild(document.createTextNode(a));
+                dd.appendChild(lbl);
+            });
+
+            trigger.onclick = (e) => { e.stopPropagation(); dd.classList.toggle('open'); };
+            document.addEventListener('click', () => dd.classList.remove('open'));
+            dd.onclick = (e) => e.stopPropagation();
+
+            menu.appendChild(trigger);
+            menu.appendChild(dd);
+            box.appendChild(menu);
+        }
+    }
+
+    // ---------- filtering ----------
+    function getFiltered() {
+        return events.filter(e => {
+            if (activeTypes.size && !activeTypes.has(e.type)) return false;
+            if (activeAudiences.size) {
+                const evAud = splitList(e.audience);
+                if (![...activeAudiences].some(a => evAud.includes(a))) return false;
             }
-        }
-
-        // Fetch events from Google Apps Script
-        async function fetchEvents() {
-            const response = await fetch(SCRIPT_URL);
-            if (!response.ok) throw new Error('Failed to fetch events');
-            allEvents = await response.json();
-
-            // Parse European date format (DD-MM-YYYY) to proper Date objects
-            allEvents.forEach(event => {
-                if (typeof event.Date === 'string' && event.Date.includes('-')) {
-                    const parts = event.Date.split('-');
-                    if (parts.length === 3) {
-                        // Check if it's DD-MM-YYYY format (first part is 1-2 digits, second is 1-2 digits, third is 4 digits)
-                        if (parts[0].length <= 2 && parts[1].length <= 2 && parts[2].length === 4) {
-                            const day = String(parts[0]).padStart(2, '0');
-                            const month = String(parts[1]).padStart(2, '0');
-                            const year = parts[2];
-                            event.DateObj = new Date(`${year}-${month}-${day}`);
-                        } else {
-                            // YYYY-MM-DD format
-                            event.DateObj = new Date(event.Date);
-                        }
-                    }
-                } else {
-                    event.DateObj = new Date(event.Date);
-                }
-            });
-
-            // Sort by date
-            allEvents.sort((a, b) => {
-                const dateA = a.DateObj || new Date(a.Date);
-                const dateB = b.DateObj || new Date(b.Date);
-                return dateA - dateB;
-            });
-        }
-
-        // Display upcoming events + 3 most recent past events (at least 10 total)
-        function displayUpcomingEvents() {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            const upcomingEvents = allEvents.filter(event => {
-                const eventDate = event.DateObj || new Date(event.Date);
-                eventDate.setHours(0, 0, 0, 0);
-                return eventDate >= today;
-            });
-
-            const pastEvents = allEvents.filter(event => {
-                const eventDate = event.DateObj || new Date(event.Date);
-                eventDate.setHours(0, 0, 0, 0);
-                return eventDate < today;
-            }).reverse(); // Get most recent past events first
-
-            // Get the 3 most recent past events
-            const recentPastEvents = pastEvents.slice(0, 3);
-
-            // Combine: upcoming events + 3 recent past events
-            filteredEvents = [...upcomingEvents, ...recentPastEvents];
-
-            isFiltered = false;
-            renderTimeline();
-        }
-
-        // Populate dropdown filters
-        function populateFilters() {
-            const locations = new Set();
-            const members = new Set();
-
-            allEvents.forEach(event => {
-                if (event.Location) locations.add(event.Location);
-                if (event.Members) {
-                    event.Members.split(',').forEach(m => members.add(m.trim()));
-                }
-            });
-
-            const locationSelect = document.getElementById('locationFilter');
-            const membersSelect = document.getElementById('membersFilter');
-
-            locations.forEach(loc => {
-                const option = document.createElement('option');
-                option.value = loc;
-                option.textContent = loc;
-                locationSelect.appendChild(option);
-            });
-
-            members.forEach(member => {
-                const option = document.createElement('option');
-                option.value = member;
-                option.textContent = member;
-                membersSelect.appendChild(option);
-            });
-        }
-
-        // Apply filters and search
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const dateFrom = document.getElementById('dateFromInput').value;
-            const dateTo = document.getElementById('dateToInput').value;
-            const location = document.getElementById('locationFilter').value;
-            const member = document.getElementById('membersFilter').value;
-
-            filteredEvents = allEvents.filter(event => {
-                // Search filter
-                const matchesSearch = !searchTerm || 
-                    event.Title.toLowerCase().includes(searchTerm) ||
-                    (event.Description || '').toLowerCase().includes(searchTerm);
-
-                // Date filters
-                const eventDate = event.DateObj || new Date(event.Date);
-                const matchesDateFrom = !dateFrom || eventDate >= new Date(dateFrom);
-                const matchesDateTo = !dateTo || eventDate <= new Date(dateTo);
-
-                // Location filter
-                const matchesLocation = !location || event.Location === location;
-
-                // Members filter
-                const matchesMembers = !member || (event.Members || '').includes(member);
-
-                return matchesSearch && matchesDateFrom && matchesDateTo && matchesLocation && matchesMembers;
-            });
-
-            isFiltered = true;
-            renderTimeline();
-        }
-
-        // Render the timeline
-        function renderTimeline() {
-            const content = document.getElementById('content');
-            document.getElementById('totalEvents').textContent = allEvents.length;
-            document.getElementById('filteredEvents').textContent = filteredEvents.length;
-
-            if (filteredEvents.length === 0) {
-                content.innerHTML = `
-                    <div class="empty-state">
-                        <h2>No events found</h2>
-                        <p>${isFiltered ? 'Try adjusting your filters or search terms.' : 'No upcoming events at the moment.'}</p>
-                    </div>
-                `;
-                return;
+            if (searchTerm) {
+                const hay = (e.name + ' ' + e.description + ' ' + e.topics).toLowerCase();
+                if (!hay.includes(searchTerm)) return false;
             }
+            return true;
+        });
+    }
 
-            const timeline = document.createElement('div');
-            timeline.className = 'timeline';
+    // ---------- render ----------
+    function render() {
+        buildFilters();
+        const filtered = getFiltered();
+        document.getElementById('totalCount').textContent = filtered.length;
 
-            filteredEvents.forEach(event => {
-                const item = document.createElement('div');
-                item.className = 'timeline-item';
+        // pagination
+        const pp = perPage === Infinity ? filtered.length || 1 : perPage;
+        const totalPages = Math.max(1, Math.ceil(filtered.length / pp));
+        if (currentPage > totalPages) currentPage = totalPages;
+        const pageItems = filtered.slice((currentPage - 1) * pp, currentPage * pp);
 
-                const eventDate = event.DateObj || new Date(event.Date);
-                const formattedDate = eventDate.toLocaleDateString('de-DE', {
-                    weekday: 'short',
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit'
-                });
+        const list = document.getElementById('list');
 
-                // Parse time from timestamp format (1899-12-30T11:00:00.000Z) to HH:MM
-                let timeHTML = '';
-                if (event.Time) {
-                    try {
-                        const timeDate = new Date(event.Time);
-                        const hours = String(timeDate.getUTCHours()).padStart(2, '0');
-                        const minutes = String(timeDate.getUTCMinutes()).padStart(2, '0');
-                        timeHTML = `<div class="event-time">⏰ ${hours}:${minutes}</div>`;
-                    } catch (e) {
-                        timeHTML = `<div class="event-time">⏰ ${event.Time}</div>`;
-                    }
-                }
-
-                let membersHTML = '';
-                if (event.Members) {
-                    membersHTML = `<div class="meta-item"><span class="meta-icon">👥</span><strong>Members:</strong> ${event.Members}</div>`;
-                }
-
-                let locationHTML = '';
-                if (event.Location) {
-                    locationHTML = `<div class="meta-item"><span class="meta-icon">📍</span><strong>Location:</strong> ${event.Location}</div>`;
-                }
-
-                let linkHTML = '';
-                if (event.Link) {
-                    linkHTML = `<a href="${event.Link}" target="_blank" rel="noopener noreferrer" class="event-link">Learn More →</a>`;
-                }
-
-                let categoryHTML = '';
-                if (event.Category) {
-                    categoryHTML = `<div class="event-category">${event.Category}</div>`;
-                }
-
-                item.innerHTML = `
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="event-date">${formattedDate}</div>
-                        ${timeHTML}
-                        <div class="event-title">${event.Title}</div>
-                        ${categoryHTML}
-                        ${event.Description ? `<div class="event-description">${event.Description}</div>` : ''}
-                        <div class="event-meta">
-                            ${locationHTML}
-                            ${membersHTML}
-                        </div>
-                        ${linkHTML}
-                    </div>
-                `;
-
-                timeline.appendChild(item);
-            });
-
-            content.innerHTML = '';
-            content.appendChild(timeline);
+        if (!filtered.length) {
+            list.innerHTML = '<div class="empty"><h3>No events found</h3><p>Try removing a filter or clearing the search.</p></div>';
+            document.getElementById('pager').innerHTML = '';
+            return;
         }
 
-        // Reset all filters and show upcoming events
-        function resetFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('dateFromInput').value = '';
-            document.getElementById('dateToInput').value = '';
-            document.getElementById('locationFilter').value = '';
-            document.getElementById('membersFilter').value = '';
-            displayUpcomingEvents();
+        // group current page by type
+        const groups = {};
+        pageItems.forEach(e => { (groups[e.type] = groups[e.type] || []).push(e); });
+
+        list.innerHTML = '';
+        Object.keys(groups).forEach(type => {
+            const items = groups[type];
+            const collapsed = collapsedTypes.has(type);
+
+            const group = document.createElement('div');
+            group.className = 'group' + (collapsed ? ' collapsed' : '');
+
+            // header
+            const head = document.createElement('div');
+            head.className = 'group-head';
+            head.innerHTML =
+                '<div class="group-name">' + escapeHtml(type) + '</div>' +
+                '<div class="badge">' + items.length + '</div>' +
+                '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+            head.onclick = () => {
+                collapsedTypes.has(type) ? collapsedTypes.delete(type) : collapsedTypes.add(type);
+                render();
+            };
+            group.appendChild(head);
+
+            // body
+            const body = document.createElement('div');
+            body.className = 'group-body';
+            items.forEach(e => body.appendChild(eventEl(e)));
+            group.appendChild(body);
+
+            list.appendChild(group);
+
+            // set max-height for smooth open
+            if (!collapsed) body.style.maxHeight = body.scrollHeight + 2000 + 'px';
+        });
+
+        renderPager(totalPages);
+    }
+
+    function eventEl(e) {
+        const wrap = document.createElement('div');
+        wrap.className = 'event' + (openEventIds.has(e._id) ? ' open' : '');
+
+        const row = document.createElement('div');
+        row.className = 'event-row';
+        row.innerHTML =
+            '<div class="event-title">' + escapeHtml(e.name) + '</div>' +
+            '<div class="event-date">' + escapeHtml(dateRange(e)) + '</div>' +
+            '<svg class="event-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>';
+        row.onclick = () => {
+            openEventIds.has(e._id) ? openEventIds.delete(e._id) : openEventIds.add(e._id);
+            render();
+        };
+
+        const detail = document.createElement('div');
+        detail.className = 'detail';
+        detail.innerHTML = detailHtml(e);
+
+        wrap.appendChild(row);
+        wrap.appendChild(detail);
+        return wrap;
+    }
+
+    function detailHtml(e) {
+        const meta = [];
+        if (e.time) meta.push(metaItem('Time', escapeHtml(e.time)));
+        if (e.location) meta.push(metaItem('Location', escapeHtml(e.location)));
+        if (e.organizer) meta.push(metaItem('Organizer', escapeHtml(e.organizer)));
+        if (e.email) meta.push(metaItem('Contact', '<a href="mailto:' + escapeHtml(e.email) + '">' + escapeHtml(e.email) + '</a>'));
+        if (e.audience) meta.push(metaItem('Audience', escapeHtml(splitList(e.audience).join(' · '))));
+        if (e.notes) meta.push(metaItem('Notes', escapeHtml(e.notes)));
+
+        const topics = splitList(e.topics);
+        const topicsHtml = topics.length
+            ? '<div class="topics">' + topics.map(t => '<span class="topic">' + escapeHtml(t) + '</span>').join('') + '</div>'
+            : '';
+
+        const reg = e.registration
+            ? '<a class="register" href="' + escapeHtml(e.registration) + '" target="_blank" rel="noopener">Register / More info →</a>'
+            : '';
+
+        return '<div class="detail-inner"><div class="detail-card">' +
+            (e.description ? '<div class="detail-desc">' + escapeHtml(e.description) + '</div>' : '') +
+            (meta.length ? '<div class="meta-grid">' + meta.join('') + '</div>' : '') +
+            topicsHtml + reg +
+            '</div></div>';
+    }
+
+    function metaItem(k, v) {
+        return '<div class="meta-item"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>';
+    }
+
+    function renderPager(totalPages) {
+        const pager = document.getElementById('pager');
+        if (totalPages <= 1) { pager.innerHTML = ''; return; }
+        pager.innerHTML = '';
+
+        const prev = document.createElement('button');
+        prev.innerHTML = '‹';
+        prev.disabled = currentPage === 1;
+        prev.onclick = () => { currentPage--; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        pager.appendChild(prev);
+
+        for (let p = 1; p <= totalPages; p++) {
+            const b = document.createElement('button');
+            b.textContent = p;
+            if (p === currentPage) b.className = 'current';
+            b.onclick = () => { currentPage = p; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+            pager.appendChild(b);
         }
 
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+        const next = document.createElement('button');
+        next.innerHTML = '›';
+        next.disabled = currentPage === totalPages;
+        next.onclick = () => { currentPage++; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        pager.appendChild(next);
+    }
+
+    // ---------- listeners ----------
+    document.getElementById('search').addEventListener('input', (e) => {
+        searchTerm = e.target.value.toLowerCase().trim();
+        currentPage = 1; render();
+    });
+    document.getElementById('perPage').addEventListener('change', (e) => {
+        perPage = e.target.value === 'all' ? Infinity : parseInt(e.target.value, 10);
+        currentPage = 1; render();
+    });
+
+    init();
+</script>
 </body>
 </html>
