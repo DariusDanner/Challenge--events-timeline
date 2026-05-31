@@ -261,7 +261,7 @@
 </div>
 
 <script>
-    //Google Apps Script URL
+    // ⚠️ Your Google Apps Script URL
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIB4By41xA0OkxS7NFFAJa4hwaDyqAoz6Q02KLJuHIky3xOgtk1X_EZiHYFAGVUt10FQ/exec';
 
     // ---------- state ----------
@@ -369,11 +369,11 @@
                 };
             }).filter(e => e.name);
 
-            // sort by start date ascending
+            // sort by start date ascending (soonest/nearest first)
             events.sort((a, b) => {
                 if (!a.start) return 1;
                 if (!b.start) return -1;
-                return a.start - b.start;
+                return a.start - b.start; // ascending: soonest first
             });
 
             buildFilters();
