@@ -261,7 +261,7 @@
 </div>
 
 <script>
-    // Google Apps Script URL
+    //Google Apps Script URL
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyIB4By41xA0OkxS7NFFAJa4hwaDyqAoz6Q02KLJuHIky3xOgtk1X_EZiHYFAGVUt10FQ/exec';
 
     // ---------- state ----------
@@ -496,7 +496,7 @@
             }
             
             return true;
-        }).sort((a, b) => b._start - a._start); // sort descending by date (newest/upcoming first)
+        }).sort((a, b) => a._start - b._start); // sort ascending by date (soonest/nearest first)
     }
 
     // ---------- render ----------
